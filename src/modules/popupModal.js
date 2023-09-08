@@ -23,7 +23,7 @@ const closeModal = () => {
   clearElements([newItemSection, newCommentsHeading, newCommentSection]);
 };
 
-const displayItemDetail = async (id, data, comments) => {
+const displayItemDetail = async (id, data) => {
   newModal.style.display = 'flex';
 
   newItemSection.innerHTML = `
@@ -32,21 +32,29 @@ const displayItemDetail = async (id, data, comments) => {
     <p class='p'>${data.strInstructions}</p>
   `;
 
-  if (comments.length > 0) {
-    const count = commentCounter(comments);
-    newCommentsHeading.innerHTML = `<p class='commentCountTitle'>Comments(${count})</p>`;
-    newCommentSection.innerHTML = comments
-      .map(
-        (comment) => `
-          <div class="commentBox-beautiful">
-            <p class="comment-name">${comment.username}:</p>
-            <p class="commentText-beautiful">${comment.comment}</p>
-            <p class="date-beautiful">${comment.creation_date}</p>
-          </div>
-        `,
-      )
-      .join('');
-  }
+  const fetchAndDisplayComments = async () => {
+    const comments = await fetchComments(`RjyF2atccOw1gRFQE3W0/comments?item_id=${id}`);
+    if (comments.length > 0) {
+      const count = commentCounter(comments);
+      newCommentsHeading.innerHTML = `<p class='commentCountTitle'>Comments(${count})</p>`;
+      newCommentSection.innerHTML = comments
+        .map(
+          (comment) => `
+            <div class="commentBox-beautiful">
+              <p class="comment-name">${comment.username}:</p>
+              <p class="commentText-beautiful">${comment.comment}</p>
+              <p class="date-beautiful">${comment.creation_date}</p>
+            </div>
+          `,
+        )
+        .join('');
+    }
+  };
+
+  await fetchAndDisplayComments();
+
+  const pollInterval = 1000;
+  const commentsPolling = setInterval(fetchAndDisplayComments, pollInterval);
 
   newBtnAddComment.addEventListener('click', async () => {
     const username = newUsernameInput.value;
@@ -56,24 +64,24 @@ const displayItemDetail = async (id, data, comments) => {
       await submitComment(id, username, comment);
       newUsernameInput.value = '';
       newCommentInput.value = '';
-      closeModal();
     }
   });
 
-  newClosebtn.addEventListener('click', closeModal);
+  newClosebtn.addEventListener('click', () => {
+    clearInterval(commentsPolling);
+    closeModal();
+  });
 };
 
 const popupModal = async (id) => {
   const resultData = await getDetail(`lookup.php?i=${id}`);
   const result = resultData.meals;
-  const comments = await fetchComments(`RjyF2atccOw1gRFQE3W0/comments?item_id=${id}`);
-  displayItemDetail(id, result[0], comments);
+  displayItemDetail(id, result[0]);
 };
 
 window.onclick = (event) => {
   if (event.target === newModal) {
-    newModal.style.display = 'none';
-    clearElements([newItemSection, newCommentsHeading, newCommentSection]);
+    closeModal();
   }
 };
 
