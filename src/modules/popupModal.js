@@ -12,15 +12,15 @@ const newBtnAddComment = document.getElementById('new-btnAddComment');
 const newUsernameInput = document.getElementById('new-username');
 const newCommentInput = document.getElementById('new-comment');
 
-const closeModal = () => {
-  newModal.style.display = 'none';
-  clearElements([newItemSection, newCommentsHeading, newCommentSection]);
-};
-
 const clearElements = (elements) => {
   elements.forEach((element) => {
     element.innerHTML = '';
   });
+};
+
+const closeModal = () => {
+  newModal.style.display = 'none';
+  clearElements([newItemSection, newCommentsHeading, newCommentSection]);
 };
 
 const displayItemDetail = async (id, data, comments) => {
@@ -64,8 +64,8 @@ const displayItemDetail = async (id, data, comments) => {
 };
 
 const popupModal = async (id) => {
-  const data = await getDetail(`lookup.php?i=${id}`);
-  const result = data.meals;
+  const resultData = await getDetail(`lookup.php?i=${id}`);
+  const result = resultData.meals;
   const comments = await fetchComments(`RjyF2atccOw1gRFQE3W0/comments?item_id=${id}`);
   displayItemDetail(id, result[0], comments);
 };

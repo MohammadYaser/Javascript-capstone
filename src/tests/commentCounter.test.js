@@ -15,7 +15,7 @@ describe('Test comment counter', () => {
 
   test('comment counter with object', () => {
     expect(
-      commentCounter([{ username: 'Bilal', comment: 'Tasty', id: '1234' }]),
+      commentCounter([{ username: 'Yaser', comment: 'Tasty', id: '1234' }]),
     ).toBe(1);
   });
 });

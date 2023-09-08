@@ -89,7 +89,7 @@ nav {
   margin-bottom: 20px; /* Increase margin-bottom for better spacing */
   border: 1px solid #e0e0e0; /* Use a lighter border color */
   border-radius: 8px; /* Increase border radius for rounded corners */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
   transition: transform 0.3s;
 }
 
@@ -101,7 +101,8 @@ nav {
 .meal img:hover {
   transform: scale(1.05); /* Slightly reduce the scale factor for a smoother hover effect */
 }
-  /* Updated Modal Styles with New Class Names */
+
+/* Updated Modal Styles with New Class Names */
 .modal-beautiful {
   display: none;
   align-items: center;
@@ -130,7 +131,6 @@ nav {
   max-width: 500px; /* Adjust the maximum width as needed */
   width: 90%; /* Adjust the width as needed */
 }
-
 
 /* Updated Close Button Styles */
 .close-beautiful {
@@ -177,7 +177,8 @@ nav {
 }
 
 /* Updated Comment Text Styles */
-.commentText-beautiful, .comment-name {
+.commentText-beautiful,
+.comment-name {
   font-size: medium;
   color: #5a5858;
 }
@@ -198,7 +199,7 @@ nav {
 
 /* Updated Styles for the "Add Comment" Button */
 .comments-button-beautiful {
-  background-color: #4CAF50; /* Change the background color */
+  background-color: #4caf50; /* Change the background color */
   color: white; /* Text color */
   padding: 12px 20px; /* Padding for the button */
   border: none;
@@ -249,6 +250,7 @@ nav {
 }
 
 .likes-icon-beautiful:hover {
+  cursor: pointer;
   transform: scale(1.1);
 }
 
