@@ -71,3 +71,12 @@ nav {
   transform: scaleX(1);
   transform-origin: left center;
 }
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(230, 196, 196); /* Set your preferred background color */
+  text-align: center;
+  padding: 10px;
+}
