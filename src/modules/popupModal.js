@@ -35,7 +35,7 @@ const displayComments = (comments) => {
             <p class="commentText-beautiful">${comment.comment}</p>
             <p class="date-beautiful">${comment.creation_date}</p>
           </div>
-        `
+        `,
       )
       .join('');
   }
@@ -47,7 +47,7 @@ const fetchAndDisplayComments = async (id) => {
     displayComments(comments);
   } catch (error) {
     // Handle errors gracefully
-    console.error('Error fetching comments:', error);
+   // console.error('Error fetching comments:', error);
   }
 };
 
@@ -89,7 +89,7 @@ const openModal = async (id) => {
     });
   } catch (error) {
     // Handle errors gracefully
-    console.error('Error opening modal:', error);
+   // console.error('Error opening modal:', error);
   }
 };
 
