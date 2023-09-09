@@ -881,7 +881,6 @@ const displayItemDetail = async (id, data) => {
     <p class='p'>${data.strInstructions}</p>
   `;
 
-  // Function to fetch and display comments
   const fetchAndDisplayComments = async () => {
     const comments = await (0,_fetchComments_js__WEBPACK_IMPORTED_MODULE_1__["default"])(`RjyF2atccOw1gRFQE3W0/comments?item_id=${id}`);
     if (comments.length > 0) {
@@ -901,11 +900,9 @@ const displayItemDetail = async (id, data) => {
     }
   };
 
-  // Initial fetch and display comments
   await fetchAndDisplayComments();
 
-  // Poll for new comments every 10 seconds (adjust the interval as needed)
-  const pollInterval = 1000; // 10 seconds
+  const pollInterval = 6000;
   const commentsPolling = setInterval(fetchAndDisplayComments, pollInterval);
 
   newBtnAddComment.addEventListener('click', async () => {
@@ -920,7 +917,7 @@ const displayItemDetail = async (id, data) => {
   });
 
   newClosebtn.addEventListener('click', () => {
-    clearInterval(commentsPolling); // Stop polling when closing the modal
+    clearInterval(commentsPolling);
     closeModal();
   });
 };
