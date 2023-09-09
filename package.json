@@ -500,8 +500,6 @@
     "vfile-message": "^2.0.4",
     "watchpack": "^2.4.0",
     "wbuf": "^1.7.3",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
     "webpack-dev-middleware": "^5.3.3",
     "webpack-dev-server": "^4.15.1",
     "webpack-merge": "^5.9.0",
@@ -530,7 +528,9 @@
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^21.0.0",
     "stylelint-csstree-validator": "^1.9.0",
-    "stylelint-scss": "^3.21.0"
+    "stylelint-scss": "^3.21.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "build": "webpack",

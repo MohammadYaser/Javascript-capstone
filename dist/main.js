@@ -852,89 +852,99 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const newModal = document.getElementById('new-modal');
-const newClosebtn = document.getElementById('new-close');
-const newItemSection = document.getElementById('new-itemSection');
-const newCommentSection = document.getElementById('new-commentSection');
-const newCommentsHeading = document.getElementById('new-commentsHeading');
-const newBtnAddComment = document.getElementById('new-btnAddComment');
-const newUsernameInput = document.getElementById('new-username');
-const newCommentInput = document.getElementById('new-comment');
+const modal = document.getElementById('new-modal');
+const closeBtn = document.getElementById('new-close');
+const itemSection = document.getElementById('new-itemSection');
+const commentSection = document.getElementById('new-commentSection');
+const commentsHeading = document.getElementById('new-commentsHeading');
+const btnAddComment = document.getElementById('new-btnAddComment');
+const usernameInput = document.getElementById('new-username');
+const commentInput = document.getElementById('new-comment');
 
-const clearElements = (elements) => {
-  elements.forEach((element) => {
-    element.innerHTML = '';
-  });
+const clearElement = (element) => {
+  element.innerHTML = '';
 };
 
 const closeModal = () => {
-  newModal.style.display = 'none';
-  clearElements([newItemSection, newCommentsHeading, newCommentSection]);
+  modal.style.display = 'none';
+  clearElement(itemSection);
+  clearElement(commentsHeading);
+  clearElement(commentSection);
 };
 
-const displayItemDetail = async (id, data) => {
-  newModal.style.display = 'flex';
+const displayComments = (comments) => {
+  if (comments.length > 0) {
+    const count = (0,_commentCounter_js__WEBPACK_IMPORTED_MODULE_3__["default"])(comments);
+    commentsHeading.innerHTML = `<p class='commentCountTitle'>Comments(${count})</p>`;
+    commentSection.innerHTML = comments
+      .map(
+        (comment) => `
+          <div class="commentBox-beautiful">
+            <p class="comment-name">${comment.username}:</p>
+            <p class="commentText-beautiful">${comment.comment}</p>
+            <p class="date-beautiful">${comment.creation_date}</p>
+          </div>
+        `
+      )
+      .join('');
+  }
+};
 
-  newItemSection.innerHTML = `
-    <img class='img-beautiful' src='${data.strMealThumb}'>
-    <h2>${data.strMeal}</h2>
-    <p class='p'>${data.strInstructions}</p>
-  `;
-
-  const fetchAndDisplayComments = async () => {
+const fetchAndDisplayComments = async (id) => {
+  try {
     const comments = await (0,_fetchComments_js__WEBPACK_IMPORTED_MODULE_1__["default"])(`RjyF2atccOw1gRFQE3W0/comments?item_id=${id}`);
-    if (comments.length > 0) {
-      const count = (0,_commentCounter_js__WEBPACK_IMPORTED_MODULE_3__["default"])(comments);
-      newCommentsHeading.innerHTML = `<p class='commentCountTitle'>Comments(${count})</p>`;
-      newCommentSection.innerHTML = comments
-        .map(
-          (comment) => `
-            <div class="commentBox-beautiful">
-              <p class="comment-name">${comment.username}:</p>
-              <p class="commentText-beautiful">${comment.comment}</p>
-              <p class="date-beautiful">${comment.creation_date}</p>
-            </div>
-          `,
-        )
-        .join('');
-    }
-  };
-
-  await fetchAndDisplayComments();
-
-  const pollInterval = 6000;
-  const commentsPolling = setInterval(fetchAndDisplayComments, pollInterval);
-
-  newBtnAddComment.addEventListener('click', async () => {
-    const username = newUsernameInput.value;
-    const comment = newCommentInput.value;
-
-    if (username !== '' && comment !== '') {
-      await (0,_submitComment_js__WEBPACK_IMPORTED_MODULE_2__["default"])(id, username, comment);
-      newUsernameInput.value = '';
-      newCommentInput.value = '';
-    }
-  });
-
-  newClosebtn.addEventListener('click', () => {
-    clearInterval(commentsPolling);
-    closeModal();
-  });
+    displayComments(comments);
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+  }
 };
 
-const popupModal = async (id) => {
-  const resultData = await (0,_getDetail_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`lookup.php?i=${id}`);
-  const result = resultData.meals;
-  displayItemDetail(id, result[0]);
+const openModal = async (id) => {
+  try {
+    const resultData = await (0,_getDetail_js__WEBPACK_IMPORTED_MODULE_0__["default"])(`lookup.php?i=${id}`);
+    const result = resultData.meals;
+    itemSection.innerHTML = `
+      <img class='img-beautiful' src='${result[0].strMealThumb}'>
+      <h2>${result[0].strMeal}</h2>
+      <p class='p'>${result[0].strInstructions}</p>
+    `;
+
+    modal.style.display = 'flex';
+
+    fetchAndDisplayComments(id);
+
+    const pollInterval = 1000;
+    const commentsPolling = setInterval(() => {
+      fetchAndDisplayComments(id);
+    }, pollInterval);
+
+    btnAddComment.addEventListener('click', async () => {
+      const username = usernameInput.value;
+      const comment = commentInput.value;
+
+      if (username !== '' && comment !== '') {
+        await (0,_submitComment_js__WEBPACK_IMPORTED_MODULE_2__["default"])(id, username, comment);
+        usernameInput.value = '';
+        commentInput.value = '';
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      clearInterval(commentsPolling);
+      closeModal();
+    });
+  } catch (error) {
+    console.error('Error opening modal:', error);
+  }
 };
 
 window.onclick = (event) => {
-  if (event.target === newModal) {
+  if (event.target === modal) {
     closeModal();
   }
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (popupModal);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (openModal);
 
 
 /***/ }),
