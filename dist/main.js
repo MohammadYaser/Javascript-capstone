@@ -895,9 +895,12 @@ const fetchAndDisplayComments = async (id) => {
     const comments = await (0,_fetchComments_js__WEBPACK_IMPORTED_MODULE_1__["default"])(`RjyF2atccOw1gRFQE3W0/comments?item_id=${id}`);
     displayComments(comments);
   } catch (error) {
+    // Handle errors gracefully
     console.error('Error fetching comments:', error);
   }
 };
+
+let commentsPollingInterval;
 
 const openModal = async (id) => {
   try {
@@ -913,10 +916,10 @@ const openModal = async (id) => {
 
     fetchAndDisplayComments(id);
 
-    const pollInterval = 1000;
-    const commentsPolling = setInterval(() => {
+    // Start polling for comments at a specific interval
+    commentsPollingInterval = setInterval(() => {
       fetchAndDisplayComments(id);
-    }, pollInterval);
+    }, 5000); // Adjust the interval (in milliseconds) as needed
 
     btnAddComment.addEventListener('click', async () => {
       const username = usernameInput.value;
@@ -930,16 +933,18 @@ const openModal = async (id) => {
     });
 
     closeBtn.addEventListener('click', () => {
-      clearInterval(commentsPolling);
+      clearInterval(commentsPollingInterval); // Stop polling when closing the modal
       closeModal();
     });
   } catch (error) {
+    // Handle errors gracefully
     console.error('Error opening modal:', error);
   }
 };
 
 window.onclick = (event) => {
   if (event.target === modal) {
+    clearInterval(commentsPollingInterval); // Stop polling when clicking outside the modal
     closeModal();
   }
 };
